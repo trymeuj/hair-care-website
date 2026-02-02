@@ -1,23 +1,53 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { questions, type Answers } from '@/data/questions';
+import QuestionView from '@/components/questionnaire/QuestionView';
+
 export default function QuestionnairePage() {
+  const router = useRouter();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Answers>({});
+
+  const currentQuestion = questions[currentQuestionIndex];
+  const selectedAnswer = answers[currentQuestion.id] || null;
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+
+  const handleSelect = (answerId: string) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: answerId,
+    }));
+  };
+
+  const handleNext = () => {
+    if (!selectedAnswer) return;
+
+    if (isLastQuestion) {
+      // Store answers in localStorage and navigate to results
+      const finalAnswers = {
+        ...answers,
+        [currentQuestion.id]: selectedAnswer,
+      };
+      localStorage.setItem('hairCareAnswers', JSON.stringify(finalAnswers));
+      router.push('/results');
+    } else {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-neutral-50 px-4 py-12 sm:px-6 sm:py-16">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center space-y-4 sm:space-y-6">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium text-neutral-900 px-2">
-            Let&apos;s build your routine
-          </h1>
-          <p className="text-base sm:text-lg text-neutral-600 px-4">
-            Questionnaire coming soon...
-          </p>
-          <a
-            href="/"
-            className="inline-block text-neutral-900 hover:text-neutral-700 underline text-sm sm:text-base min-h-[44px] flex items-center justify-center"
-          >
-            ← Back to home
-          </a>
-        </div>
+    <main className="min-h-screen bg-neutral-50 px-4 py-6 sm:px-6 sm:py-8 md:py-12 flex items-center justify-center">
+      <div className="w-full max-w-lg">
+        <QuestionView
+          question={currentQuestion}
+          selectedAnswer={selectedAnswer}
+          onSelect={handleSelect}
+          onNext={handleNext}
+          currentQuestion={currentQuestionIndex + 1}
+          totalQuestions={questions.length}
+        />
       </div>
     </main>
   );
