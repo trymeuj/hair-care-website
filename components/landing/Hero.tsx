@@ -29,7 +29,7 @@ export default function Hero() {
       <Beard />
       <div className="relative z-10 text-center space-y-4 sm:space-y-6 md:space-y-8 w-full">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-neutral-900 leading-tight">
-          Do you know what's your hair type ?
+          Do you know what&apos;s your hair type ?
         </h1>
 
         <div className="flex justify-center py-4 sm:py-6 md:py-8">
@@ -52,12 +52,12 @@ export default function Hero() {
           onClick={() => router.push('/questionnaire')}
           className="group inline-flex items-center justify-center gap-2 bg-neutral-900 text-white px-6 py-3.5 sm:px-8 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-neutral-800 transition-colors active:scale-95 min-h-[44px]"
         >
-          what's my type ?
+          what&apos;s my type ?
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </button>
 
         <p className="text-base sm:text-lg md:text-xl text-neutral-600 max-w-2xl mx-auto leading-relaxed px-2">
-          Know your type. Know what's right for you, not what Sallu bhai says.
+          Know your type. Know what&apos;s right for you, not what Sallu bhai says.
         </p>
       </div>
     </section>

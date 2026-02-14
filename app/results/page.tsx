@@ -57,7 +57,7 @@ export default function ResultsPage() {
                 Thanks!
               </h1>
               <p className="text-lg sm:text-xl text-neutral-600">
-                We'll send your report to WhatsApp shortly.
+                We&apos;ll send your report to WhatsApp shortly.
               </p>
             </div>
           )}
