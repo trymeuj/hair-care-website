@@ -14,7 +14,7 @@ export default function CTA() {
         </h2>
         
         <p className="text-base sm:text-lg text-neutral-600 px-4">
-          Get clear, personalized guidance in the next 2 mins.
+          Personalise your hair care routine, from knowledge, not ads on instagram
         </p>
 
         <button

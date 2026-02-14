@@ -3,18 +3,18 @@ import { MessageSquare, Sparkles, CheckCircle } from 'lucide-react';
 const steps = [
   {
     icon: MessageSquare,
-    title: 'Answer a few questions',
-    description: 'Hair type, scalp condition, lifestyle, effort tolerance, budget.'
+    title: 'answer few questions',
+    description: ''
   },
   {
     icon: Sparkles,
-    title: 'Get your routine',
-    description: 'Clear, personalized guidance on what to use and when.'
+    title: 'know your type',
+    description: ''
   },
   {
     icon: CheckCircle,
-    title: 'Follow it consistently',
-    description: 'Simple enough to stick with. Effective enough to matter. Track your progress.'
+    title: 'choose products that work for you, not randomly',
+    description: ''
   }
 ];
 
