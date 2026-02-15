@@ -1,19 +1,61 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
+import type { Answers } from '@/data/questions';
 
 export default function ResultsPage() {
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [answers, setAnswers] = useState<Answers | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Load answers from localStorage on mount
+  useEffect(() => {
+    const storedAnswers = localStorage.getItem('hairCareAnswers');
+    if (storedAnswers) {
+      try {
+        setAnswers(JSON.parse(storedAnswers));
+      } catch (error) {
+        console.error('Error parsing stored answers:', error);
+      }
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle phone number submission here
-    console.log('Phone number:', phoneNumber);
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/submit-phone', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber,
+          answers: answers || {},
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        // Optionally clear localStorage after successful submission
+        localStorage.removeItem('hairCareAnswers');
+      } else {
+        console.error('Failed to submit data');
+        // Still show success to user even if backend fails
+        setSubmitted(true);
+      }
+    } catch (error) {
+      console.error('Error submitting data:', error);
+      // Still show success to user even if backend fails
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -40,13 +82,17 @@ export default function ResultsPage() {
                     placeholder="Enter your phone number"
                     className="flex-1 px-5 py-4 rounded-xl bg-neutral-100 border-2 border-neutral-200 focus:border-neutral-900 focus:bg-white focus:outline-none text-base text-neutral-900 placeholder:text-neutral-500 transition-all"
                     required
+                    disabled={isSubmitting}
                   />
                   <button
                     type="submit"
-                    className="group inline-flex items-center justify-center gap-2 bg-neutral-900 text-white px-8 py-4 rounded-xl text-base font-medium hover:bg-neutral-800 transition-all active:scale-95 whitespace-nowrap min-h-[56px]"
+                    disabled={isSubmitting}
+                    className="group inline-flex items-center justify-center gap-2 bg-neutral-900 text-white px-8 py-4 rounded-xl text-base font-medium hover:bg-neutral-800 transition-all active:scale-95 whitespace-nowrap min-h-[56px] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Get report
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    {isSubmitting ? 'Saving...' : 'Get report'}
+                    {!isSubmitting && (
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    )}
                   </button>
                 </div>
               </form>
