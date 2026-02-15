@@ -7,6 +7,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Hair Care Routine | Get Your Personalized Plan",
   description: "Answer a few questions. Get a clear, personalized hair care routine. No research. No guessing. No overthinking.",
+  icons: {
+    icon: '/hair facebook page logo.jpeg',
+    apple: '/hair facebook page logo.jpeg',
+  },
 };
 
 export default function RootLayout({
