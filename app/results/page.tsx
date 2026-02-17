@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import type { Answers } from '@/data/questions';
+import { metaTrack } from '@/lib/metaPixel';
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -29,6 +30,9 @@ export default function ResultsPage() {
     setIsSubmitting(true);
 
     try {
+      // Standard Meta event for lead capture (do not send the phone number)
+      metaTrack('Lead');
+
       const response = await fetch('/api/submit-phone', {
         method: 'POST',
         headers: {

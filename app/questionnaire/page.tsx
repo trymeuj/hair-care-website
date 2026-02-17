@@ -1,14 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { questions, type Answers } from '@/data/questions';
 import QuestionView from '@/components/questionnaire/QuestionView';
+import { metaTrackCustom } from '@/lib/metaPixel';
 
 export default function QuestionnairePage() {
   const router = useRouter();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
+
+  useEffect(() => {
+    metaTrackCustom('QuizStart');
+  }, []);
 
   const currentQuestion = questions[currentQuestionIndex];
   const selectedAnswer = answers[currentQuestion.id] || null;
@@ -31,6 +36,7 @@ export default function QuestionnairePage() {
         [currentQuestion.id]: selectedAnswer,
       };
       localStorage.setItem('hairCareAnswers', JSON.stringify(finalAnswers));
+      metaTrackCustom('QuizComplete', { num_questions: questions.length });
       router.push('/results');
     } else {
       setCurrentQuestionIndex((prev) => prev + 1);

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
+import MetaPixel from "@/components/MetaPixel";
+import MetaPageView from "@/components/MetaPageView";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <MetaPixel />
+        <Suspense fallback={null}>
+          <MetaPageView />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }
