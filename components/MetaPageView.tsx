@@ -1,12 +1,11 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { metaPageView } from '@/lib/metaPixel';
 
 export default function MetaPageView() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const didInit = useRef(false);
 
   useEffect(() => {
@@ -16,7 +15,7 @@ export default function MetaPageView() {
       return;
     }
     metaPageView();
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }
